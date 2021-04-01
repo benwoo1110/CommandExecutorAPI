@@ -53,4 +53,9 @@ public class Command {
     public String getCommandString() {
         return commandString;
     }
+
+    @Override
+    public String toString() {
+        return this.handler.getIdentifier() + ":" + this.commandString;
+    }
 }

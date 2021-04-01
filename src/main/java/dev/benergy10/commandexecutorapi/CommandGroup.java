@@ -86,4 +86,9 @@ public class CommandGroup implements Collection<Command> {
     public void clear() {
         this.commands.clear();
     }
+
+    @Override
+    public String toString() {
+        return this.commands.toString();
+    }
 }
