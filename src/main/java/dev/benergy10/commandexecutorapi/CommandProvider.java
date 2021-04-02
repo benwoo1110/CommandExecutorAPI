@@ -41,10 +41,13 @@ public class CommandProvider {
     public Command toCommand(String command) {
         String[] commandSplit = COLON_SPLIT.split(command, 2);
         if (commandSplit.length == 1) {
-            return new Command(this.defaultHandler, commandSplit[0]);
+            return new Command(this.defaultHandler, command);
         }
         Handler handler = this.getHandler(commandSplit[1]);
-        return new Command((handler == null ? this.defaultHandler : handler), commandSplit[1]);
+        if (handler == null) {
+            return new Command(this.defaultHandler, command);
+        }
+        return new Command(handler, commandSplit[1]);
     }
 
     public CommandGroup toCommandGroup(Collection<String> commands) {
