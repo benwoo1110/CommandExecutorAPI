@@ -7,9 +7,14 @@ import org.jetbrains.annotations.NotNull;
 public class OpHandler implements Handler {
     @Override
     public void execute(@NotNull CommandSender target, @NotNull String commandString) {
-        target.setOp(true);
-        Bukkit.dispatchCommand(target, commandString);
-        target.setOp(false);
+        try {
+            target.setOp(true);
+            Bukkit.dispatchCommand(target, commandString);
+        } catch (Throwable t) {
+            t.printStackTrace();
+        } finally {
+            target.setOp(false);
+        }
     }
 
     @Override
