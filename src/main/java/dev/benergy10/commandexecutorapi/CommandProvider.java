@@ -43,7 +43,7 @@ public class CommandProvider {
         if (commandSplit.length == 1) {
             return new Command(this.defaultHandler, command);
         }
-        Handler handler = this.getHandler(commandSplit[1]);
+        Handler handler = this.getHandler(commandSplit[0]);
         if (handler == null) {
             return new Command(this.defaultHandler, command);
         }
