@@ -17,13 +17,26 @@ public class CommandProvider {
 
     private final Map<String, Handler> handlerTypes;
     private Handler defaultHandler;
+    private boolean papiInstalled = false;
+    private boolean usePapi;
 
     public CommandProvider() {
         this.handlerTypes = new HashMap<>();
-        this.registerHandler(new DefaultHandler());
+
+        this.registerDefaultHandler(new DefaultHandler());
         this.registerHandler(new ConsoleHandler());
         this.registerHandler(new OpHandler());
-        this.setDefaultHandler("");
+
+        try {
+            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+            papiInstalled = true;
+        } catch (ClassNotFoundException e) {
+            // ignore
+        }
+    }
+
+    public void registerDefaultHandler(Handler handler) {
+        this.defaultHandler = handler;
     }
 
     public void registerHandler(Handler handler) {
@@ -34,23 +47,37 @@ public class CommandProvider {
         return this.handlerTypes.get(identifier);
     }
 
-    public void setDefaultHandler(String identifier) {
-        this.defaultHandler = this.getHandler(identifier);
-    }
-
     public Command toCommand(String command) {
         String[] commandSplit = COLON_SPLIT.split(command, 2);
         if (commandSplit.length == 1) {
-            return new Command(this.defaultHandler, command);
+            return new Command(this, this.defaultHandler, command);
         }
         Handler handler = this.getHandler(commandSplit[0]);
         if (handler == null) {
-            return new Command(this.defaultHandler, command);
+            return new Command(this, this.defaultHandler, command);
         }
-        return new Command(handler, commandSplit[1]);
+        return new Command(this, handler, commandSplit[1]);
     }
 
     public CommandGroup toCommandGroup(Collection<String> commands) {
-        return commands.stream().map(this::toCommand).collect(Collectors.toCollection(CommandGroup::new));
+        return commands.stream()
+                .map(this::toCommand)
+                .collect(Collectors.toCollection(CommandGroup::new));
+    }
+
+    public boolean shouldResolvePapiPlaceholders() {
+        return papiInstalled && usePapi;
+    }
+
+    public boolean isPapiInstalled() {
+        return papiInstalled;
+    }
+
+    public boolean isUsePapi() {
+        return usePapi;
+    }
+
+    public void setUsePapi(boolean usePapi) {
+        this.usePapi = usePapi;
     }
 }

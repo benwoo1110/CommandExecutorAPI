@@ -8,30 +8,21 @@ import org.bukkit.entity.Player;
 
 public class Command {
 
-    private static boolean hasPapi = false;
-
-    static {
-        try {
-            Class.forName("me.clip.placeholderapi.PlaceholderAPI");
-            hasPapi = true;
-        } catch (ClassNotFoundException e) {
-            // ignore
-        }
-    }
-    
+    private final CommandProvider provider;
     private final Handler handler;
     private final String commandString;
 
-    public Command(Handler handler, String commandString) {
+    public Command(CommandProvider provider, Handler handler, String commandString) {
+        this.provider = provider;
         this.handler = handler;
         this.commandString = commandString;
     }
 
     public void execute(CommandSender target) {
-        this.handler.execute(target, this.replacePlaceholders(target));
+        this.handler.execute(target, this.parseCommandString(target));
     }
 
-    public String replacePlaceholders(CommandSender target) {
+    public String parseCommandString(CommandSender target) {
         String parsedCommand = this.commandString.replaceAll("%player%", target.getName());
 
         if (target instanceof Entity) {
@@ -39,7 +30,7 @@ public class Command {
             parsedCommand = parsedCommand.replaceAll("%world%", entity.getWorld().getName());
         }
 
-        if (hasPapi && target instanceof Player) {
+        if (provider.shouldResolvePapiPlaceholders() && target instanceof Player) {
             parsedCommand = PlaceholderAPI.setPlaceholders((Player) target, parsedCommand);
         }
 
