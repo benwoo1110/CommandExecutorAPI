@@ -41,15 +41,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.destroystokyo.paper</groupId>
+            <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
+            <version>2.10.10</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -57,11 +57,11 @@
     <distributionManagement>
         <repository>
             <id>benergy10</id>
-            <url>https://repo.benergy10.dev/repository/minecraft/</url>
+            <url>http://repo.benergy10.dev/repository/minecraft/</url>
         </repository>
         <snapshotRepository>
             <id>benergy10</id>
-            <url>https://repo.benergy10.dev/repository/minecraft-snapshots/</url>
+            <url>http://repo.benergy10.dev/repository/minecraft-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
