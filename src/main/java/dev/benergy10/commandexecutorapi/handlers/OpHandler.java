@@ -4,16 +4,23 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
+import static com.oracle.graal.compiler.enterprise.c.t;
+
 public class OpHandler implements Handler {
     @Override
     public void execute(@NotNull CommandSender target, @NotNull String commandString) {
+        boolean isTargetOp = target.isOp();
         try {
-            target.setOp(true);
+            if (!isTargetOp) {
+                target.setOp(true);
+            }
             Bukkit.dispatchCommand(target, commandString);
         } catch (Throwable t) {
             t.printStackTrace();
         } finally {
-            target.setOp(false);
+            if (!isTargetOp) {
+                target.setOp(false);
+            }
         }
     }
 
